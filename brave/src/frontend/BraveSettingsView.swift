@@ -29,11 +29,7 @@ class BraveSettingsView : AppSettingsTableViewController {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
     }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -108,9 +104,9 @@ class BraveSettingsView : AppSettingsTableViewController {
         settings += [
             SettingSection(title: NSAttributedString(string: Strings.General.uppercased()), children: generalSettings),
             
-//            SettingSection(title: NSAttributedString(string: Strings.Sync.uppercased()), children:
-//                [SyncDevicesSetting(settings: self)]
-//            ),
+            SettingSection(title: NSAttributedString(string: Strings.OtherSettings.uppercased()), children:
+                [SyncDevicesSetting(settings: self)]
+            ),
             SettingSection(title: NSAttributedString(string: Strings.Privacy.uppercased()), children:
                 [ClearPrivateDataSetting(settings: self), CookieSetting(profile: self.profile),
                     BoolSetting(prefs: prefs, prefKey: kPrefKeyPrivateBrowsingAlwaysOn, defaultValue: false, titleText: Strings.Private_Browsing_Only, statusText: nil, settingDidChange: { isOn in
@@ -197,7 +193,6 @@ extension BraveSettingsView : PinViewControllerDelegate {
         }
     }
 }
-
 
 class VersionSetting : Setting {
     let settings: SettingsTableViewController
@@ -356,7 +351,7 @@ class PasswordsClearable: Clearable {
 
 class BraveSupportLinkSetting: Setting {
     override var title: NSAttributedString? {
-        return NSAttributedString(string: Strings.Report_a_bug, attributes: [NSForegroundColorAttributeName: BraveUX.DefaultBlue])
+        return NSAttributedString(string: Strings.Report_a_bug, attributes: [NSForegroundColorAttributeName: BraveUX.BraveOrange])
     }
 
     override var url: URL? {
