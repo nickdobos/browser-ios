@@ -285,11 +285,17 @@ class BrowserLocationView: UIView {
         }
 
         if let httplessURL = url?.absoluteDisplayString, let baseDomain = url?.baseDomain {
-            // Highlight the base domain of the current URL.
-            let attributedString = NSMutableAttributedString(string: httplessURL)
-            let nsRange = NSMakeRange(0, httplessURL.count)
+            
+            var urlString = httplessURL
+            // remove https:// (the scheme) from the url when displaying
+            if let scheme = url?.scheme, let range = urlString.range(of: "\(scheme)://") {
+                urlString = urlString.replacingCharacters(in: range, with: "")
+            }
+            
+            // color url path
+            let attributedString = NSMutableAttributedString(string: urlString)
+            let nsRange = NSMakeRange(0, urlString.count)
             attributedString.addAttribute(NSForegroundColorAttributeName, value: baseURLFontColor, range: nsRange)
-            attributedString.colorSubstring("https://", withColor: BraveUX.Green)
             attributedString.colorSubstring(baseDomain, withColor: hostFontColor)
             attributedString.addAttribute(UIAccessibilitySpeechAttributePitch, value: NSNumber(value: BrowserLocationViewUX.BaseURLPitch), range: nsRange)
             attributedString.pitchSubstring(baseDomain, withPitch: BrowserLocationViewUX.HostPitch)
