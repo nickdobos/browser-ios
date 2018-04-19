@@ -209,9 +209,19 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         bookmark.parentFolderObjectId = parentFolder?.syncUUID
         bookmark.site = site
         
+        let context = DataController.shared.workerContext 
+        
+        // Fetching bookmarks happen on mainThreadContext but we add it on worker context to work around the 
+        // duplicated bookmarks bug.
+        // To avoid CoreData crashes we get the parent folder on worker context via its objectID.
+        var folderOnWorkerContext: Bookmark?
+        if let folder = parentFolder {
+            folderOnWorkerContext = (try? context.existingObject(with: folder.objectID)) as? Bookmark
+        } 
+        
         // Using worker context here, this propogates up, and merged into main.
         // There is some odd issue with duplicates when using main thread
-        return self.add(rootObject: bookmark, save: true, sendToSync: true, parentFolder: parentFolder, context: DataController.shared.workerContext)
+        return self.add(rootObject: bookmark, save: true, sendToSync: true, parentFolder: folderOnWorkerContext, context: context)
     }
     
     // TODO: Migration syncUUIDS still needs to be solved
