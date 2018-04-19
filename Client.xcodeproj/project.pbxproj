@@ -80,6 +80,7 @@
 		0A159C931FD017DB005A79BF /* DeviceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A159C921FD017DB005A79BF /* DeviceDetector.swift */; };
 		0A2551764195AA45DBDDF655 /* memtable.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E632C3081928FF6C86DEE4 /* memtable.cc */; };
 		0A3AA90C1FFF8C3100855082 /* FavoritesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3AA90B1FFF8C3100855082 /* FavoritesDataSource.swift */; };
+		0A3D9E65207FBC290034D5F0 /* crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A3D9E64207FBC290034D5F0 /* crypto.js */; };
 		0A4932892019FC4800EB7DB8 /* ViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4932882019FC4800EB7DB8 /* ViewUtil.swift */; };
 		0A59F2CB207406D900B0779F /* GlobalSign_r3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0A59F2C9207406D900B0779F /* GlobalSign_r3.cer */; };
 		0A59F2CC207406D900B0779F /* GlobalSign_r1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0A59F2CA207406D900B0779F /* GlobalSign_r1.cer */; };
@@ -316,16 +317,15 @@
 		5D11B1931F01A5F8007B1DF4 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D11B1921F01A5F8007B1DF4 /* UIViewExtensions.swift */; };
 		5D2029A22009726C004F6AC2 /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2029A12009726C004F6AC2 /* Syncable.swift */; };
 		5D27859A1E70D7EF0066EC15 /* JSInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2785991E70D7EF0066EC15 /* JSInjector.swift */; };
-		5D2785BE1E71D7050066EC15 /* NicewareTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27858C1E70CC660066EC15 /* NicewareTest.swift */; };
+		5D2785BE1E71D7050066EC15 /* SyncCryptoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27858C1E70CC660066EC15 /* SyncCryptoTest.swift */; };
 		5D2AE6F81E83F3EC00BC274C /* SyncBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2AE6F51E83F3EC00BC274C /* SyncBookmark.swift */; };
 		5D2AE6FA1E83F3EC00BC274C /* SyncSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2AE6F71E83F3EC00BC274C /* SyncSite.swift */; };
-		5D2B07EB1E6733B900244C39 /* niceware.js in Resources */ = {isa = PBXBuildFile; fileRef = 5D2B07EA1E6733B900244C39 /* niceware.js */; };
 		5D2F106E1ECA0E3100CF0E0D /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F106D1ECA0E3100CF0E0D /* Device.swift */; };
 		5D2F109E1ECA40DC00CF0E0D /* SyncRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2F109D1ECA40DC00CF0E0D /* SyncRecord.swift */; };
 		5D3892551E98108F00F959E6 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5D3892531E98108F00F959E6 /* Model.xcdatamodeld */; };
 		5D448B481EA1572A00F1BA98 /* WebsitePresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D448B471EA1572A00F1BA98 /* WebsitePresentable.swift */; };
 		5D48087C1F13C07D00E04833 /* IntExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D48087B1F13C07D00E04833 /* IntExtensions.swift */; };
-		5D71B69B1E6885E00073621F /* Niceware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71B69A1E6885E00073621F /* Niceware.swift */; };
+		5D71B69B1E6885E00073621F /* SyncCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71B69A1E6885E00073621F /* SyncCrypto.swift */; };
 		5D75A1E71F1420F0003FB8C7 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CD1641D1EDFB7090037ECCC /* SQLite.framework */; };
 		5D75A1E81F1420F0003FB8C7 /* SQLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5CD1641D1EDFB7090037ECCC /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DA05E2D1EFC4315001D7EDE /* ErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA05E2C1EFC4315001D7EDE /* ErrorExtensions.swift */; };
@@ -1023,6 +1023,7 @@
 		0A159C921FD017DB005A79BF /* DeviceDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetector.swift; sourceTree = "<group>"; };
 		0A3316501FFD4C6B00BFC542 /* Model6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model6.xcdatamodel; sourceTree = "<group>"; };
 		0A3AA90B1FFF8C3100855082 /* FavoritesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesDataSource.swift; sourceTree = "<group>"; };
+		0A3D9E64207FBC290034D5F0 /* crypto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = crypto.js; path = Carthage/Checkouts/crypto/browser/crypto.js; sourceTree = SOURCE_ROOT; };
 		0A4932882019FC4800EB7DB8 /* ViewUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtil.swift; sourceTree = "<group>"; };
 		0A6365D82012011700371C27 /* FavoritesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesHelper.swift; sourceTree = "<group>"; };
 		0A7C92BD201F3FDA0070BF98 /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SyncViewController.swift; path = brave/src/frontend/sync/SyncViewController.swift; sourceTree = "<group>"; };
@@ -1308,11 +1309,10 @@
 		5D11B1821F0195A7007B1DF4 /* JSONSerializationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONSerializationExtensions.swift; path = Client/Extensions/JSONSerializationExtensions.swift; sourceTree = "<group>"; };
 		5D11B1921F01A5F8007B1DF4 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		5D2029A12009726C004F6AC2 /* Syncable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Syncable.swift; path = brave/src/data/Syncable.swift; sourceTree = "<group>"; };
-		5D27858C1E70CC660066EC15 /* NicewareTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NicewareTest.swift; sourceTree = "<group>"; };
+		5D27858C1E70CC660066EC15 /* SyncCryptoTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncCryptoTest.swift; sourceTree = "<group>"; };
 		5D2785991E70D7EF0066EC15 /* JSInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSInjector.swift; sourceTree = "<group>"; };
 		5D2AE6F51E83F3EC00BC274C /* SyncBookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncBookmark.swift; sourceTree = "<group>"; };
 		5D2AE6F71E83F3EC00BC274C /* SyncSite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncSite.swift; sourceTree = "<group>"; };
-		5D2B07EA1E6733B900244C39 /* niceware.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = niceware.js; path = Carthage/Checkouts/niceware/browser/niceware.js; sourceTree = SOURCE_ROOT; };
 		5D2F10651EC9E8AD00CF0E0D /* Model3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model3.xcdatamodel; sourceTree = "<group>"; };
 		5D2F106D1ECA0E3100CF0E0D /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Device.swift; path = brave/src/data/Device.swift; sourceTree = "<group>"; };
 		5D2F109D1ECA40DC00CF0E0D /* SyncRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncRecord.swift; sourceTree = "<group>"; };
@@ -1321,7 +1321,7 @@
 		5D448B471EA1572A00F1BA98 /* WebsitePresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebsitePresentable.swift; path = brave/src/data/WebsitePresentable.swift; sourceTree = "<group>"; };
 		5D48087B1F13C07D00E04833 /* IntExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IntExtensions.swift; path = Client/Extensions/IntExtensions.swift; sourceTree = "<group>"; };
 		5D4808BF1F13FA4200E04833 /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = Carthage/Checkouts/SwiftyJSON/SwiftyJSON.xcodeproj; sourceTree = "<group>"; };
-		5D71B69A1E6885E00073621F /* Niceware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Niceware.swift; sourceTree = "<group>"; };
+		5D71B69A1E6885E00073621F /* SyncCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncCrypto.swift; sourceTree = "<group>"; };
 		5D7443D91F2BDB2B001653E9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5D7443DA1F2BDB2B001653E9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BraveShareToInfoPlist.strings; sourceTree = "<group>"; };
 		5D84AB2CBD701CBBDC40620C /* ReadingListAuthenticator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReadingListAuthenticator.swift; path = ./ReadingList/ReadingListAuthenticator.swift; sourceTree = "<group>"; };
@@ -3373,7 +3373,7 @@
 			children = (
 				0A8053971FC59D93008D6822 /* DauTest.swift */,
 				EBD312CF1E4967FE0077934D /* SyncTest.swift */,
-				5D27858C1E70CC660066EC15 /* NicewareTest.swift */,
+				5D27858C1E70CC660066EC15 /* SyncCryptoTest.swift */,
 				EB8E3D651DF78237006EA0D1 /* FingerprintProtectionTest.swift */,
 				EBE50B7C1DAE8D70000BC0A1 /* BookmarksTest.swift */,
 				EB36616E1D9C3CEC00445C92 /* HttpsEverywhereTest.swift */,
@@ -3416,12 +3416,12 @@
 			isa = PBXGroup;
 			children = (
 				EBDB7D561E14337800D744C7 /* ios-sync.js */,
-				5D2B07EA1E6733B900244C39 /* niceware.js */,
+				0A3D9E64207FBC290034D5F0 /* crypto.js */,
 				EBDB7D511E14331900D744C7 /* polyfill */,
 				EBDB7D4C1E1432E800D744C7 /* bundles */,
 				5D2785991E70D7EF0066EC15 /* JSInjector.swift */,
 				EBDB7D461E14231900D744C7 /* Sync.swift */,
-				5D71B69A1E6885E00073621F /* Niceware.swift */,
+				5D71B69A1E6885E00073621F /* SyncCrypto.swift */,
 				5D2AE6ED1E83F3D200BC274C /* fetched models */,
 			);
 			name = sync;
@@ -4306,7 +4306,6 @@
 				EB8F56A01DD13DF300679A78 /* FiraSans-Medium.ttf in Resources */,
 				2210C35A6B7EB8745B0E93B9 /* SessionRestore.html in Resources */,
 				EB8F569E1DD13DF300679A78 /* FiraSans-Italic.ttf in Resources */,
-				5D2B07EB1E6733B900244C39 /* niceware.js in Resources */,
 				59F67C0B4DAA5B488E2C83EF /* SpotlightHelper.js in Resources */,
 				EB8F56981DD13DF300679A78 /* CharisSILBI.ttf in Resources */,
 				8F8FEAE7F3F5794866B0163C /* topdomains.txt in Resources */,
@@ -4314,6 +4313,7 @@
 				A017135F85E8E813D1E8DF11 /* WindowCloseHelper.js in Resources */,
 				C68CDF76C7FC1770D6427F76 /* Home.xcassets in Resources */,
 				3E0F37CB279D8276AD55303D /* Intro.xcassets in Resources */,
+				0A3D9E65207FBC290034D5F0 /* crypto.js in Resources */,
 				C415871DCEBA47DC7C423105 /* ReadabilityBrowserHelper.js in Resources */,
 				35A3D6A6BB8100ACF4EBFD5E /* Reader.css in Resources */,
 				EB8F56A21DD13DF300679A78 /* FiraSans-SemiBold.ttf in Resources */,
@@ -4589,7 +4589,7 @@
 				EBD312D01E4967FE0077934D /* SyncTest.swift in Sources */,
 				EB62B8021DB59EF9006FD479 /* WebViewLoadTest.swift in Sources */,
 				0A8053981FC59D93008D6822 /* DauTest.swift in Sources */,
-				5D2785BE1E71D7050066EC15 /* NicewareTest.swift in Sources */,
+				5D2785BE1E71D7050066EC15 /* SyncCryptoTest.swift in Sources */,
 				EB8E3D661DF78237006EA0D1 /* FingerprintProtectionTest.swift in Sources */,
 				EB3661761D9C3CEC00445C92 /* HttpsEverywhereTest.swift in Sources */,
 				EB8E3D711DF785CD006EA0D1 /* WebViewLoadTestUtils.swift in Sources */,
@@ -4627,7 +4627,7 @@
 				4DB470E1162880D83AB88E5C /* block.cc in Sources */,
 				5FBB6E142EFF5F6E989ABD49 /* block_builder.cc in Sources */,
 				1204E92DCEECF3540EA648CF /* filter_block.cc in Sources */,
-				5D71B69B1E6885E00073621F /* Niceware.swift in Sources */,
+				5D71B69B1E6885E00073621F /* SyncCrypto.swift in Sources */,
 				0A03FFEE1FCDF0C400DF32C9 /* prog.cc in Sources */,
 				5C1A9E851F97D6060071495E /* PopupView.swift in Sources */,
 				40DD8F2FF8733625CF906534 /* format.cc in Sources */,

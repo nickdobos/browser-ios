@@ -45,7 +45,7 @@ class SyncPairCameraViewController: SyncViewController {
 
             // TODO: Functional, but needs some cleanup
             struct Scanner { static var Lock = false }
-            if let bytes = Niceware.shared.splitBytes(fromJoinedBytes: data) {
+            if let bytes = SyncCrypto.shared.splitBytes(fromJoinedBytes: data) {
                 if (Scanner.Lock) {
                     // Have internal, so camera error does not show
                     return

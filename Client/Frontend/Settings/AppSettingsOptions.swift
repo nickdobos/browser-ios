@@ -258,4 +258,3 @@ class ChangePinSetting: Setting {
         navigationController?.pushViewController(view, animated: true)
     }
 }
-

@@ -51,7 +51,7 @@ class Device: NSManagedObject, Syncable {
         let device = Device(entity: Device.entity(context: context), insertInto: context)
         
         device.created = root?.syncNativeTimestamp ?? Date()
-        device.syncUUID = root?.objectId ?? Niceware.shared.uniqueSerialBytes(count: 16)
+        device.syncUUID = root?.objectId ?? SyncCrypto.shared.uniqueSerialBytes(count: 16)
 
         device.update(syncRecord: root)
         

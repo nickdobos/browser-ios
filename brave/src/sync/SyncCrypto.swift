@@ -5,13 +5,13 @@ import WebKit
 import Shared
 import SwiftyJSON
 
-class Niceware: JSInjector {
+class SyncCrypto: JSInjector {
 
-    static let shared = Niceware()
+    static let shared = SyncCrypto()
     
-    fileprivate let nicewareWebView = WKWebView(frame: CGRect.zero, configuration: Niceware.webConfig)
-    /// Whehter or not niceware is ready to be used
-    fileprivate var isNicewareReady = false
+    fileprivate let syncCryptoWebView = WKWebView(frame: CGRect.zero, configuration: SyncCrypto.webConfig)
+    /// Whehter or not sync crypto is ready to be used
+    fileprivate var isSyncCryptoReady = false
     
     override init() {
         super.init()
@@ -19,19 +19,19 @@ class Niceware: JSInjector {
         self.maximumDelayAttempts = 4
         
         // Overriding javascript check for this subclass
-        self.isJavascriptReadyCheck = { return self.isNicewareReady }
+        self.isJavascriptReadyCheck = { return self.isSyncCryptoReady }
         
-        // Load HTML and await for response, to verify the webpage is loaded to receive niceware commands
-        self.nicewareWebView.navigationDelegate = self;
+        // Load HTML and await for response, to verify the webpage is loaded to receive brave-crypto commands
+        self.syncCryptoWebView.navigationDelegate = self;
         // Must load HTML for delegate method to fire
-        self.nicewareWebView.loadHTMLString("<body>TEST</body>", baseURL: nil)
+        self.syncCryptoWebView.loadHTMLString("<body>TEST</body>", baseURL: nil)
     }
     
     fileprivate class var webConfig:WKWebViewConfiguration {
         let webCfg = WKWebViewConfiguration()
         webCfg.userContentController = WKUserContentController()
         
-        if let script = Sync.getScript("niceware") {
+        if let script = Sync.getScript("crypto") {
             webCfg.userContentController.addUserScript(WKUserScript(source: script, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
         
@@ -51,7 +51,7 @@ class Niceware: JSInjector {
         // TODO: Add byteCount validation (e.g. must be even)
         
         executeBlockOnReady {
-            self.nicewareWebView.evaluateJavaScript("JSON.stringify(niceware.passphraseToBytes(niceware.generatePassphrase(\(byteCount))))") { (result, error) in
+            self.syncCryptoWebView.evaluateJavaScript("JSON.stringify(module.exports.passphrase.toBytes32(module.exports.getSeed(\(byteCount))))") { (result, error) in
                 
                 let bytes = JSON(parseJSON: result as? String ?? "")["data"].array?.map({ $0.intValue })
                 completion(bytes, error)
@@ -60,23 +60,24 @@ class Niceware: JSInjector {
     }
     
     /// Takes hex values and returns associated English words
-    /// fromBytes: Array of hex strings (no "0x" prefix) : ["00", "ee", "4a", "42"]
-    /// returns (via completion): Array of words from niceware that map to those hex values : ["administrational", "experimental"]
+    /// fromBytesOrHex: Array of hex strings (no "0x" prefix) : ["00", "ee", "4a", "42"]
+    /// returns (via completion): String of words from brave-crypto that map to those hex values:
+    /// "administrational experimental"
     // TODO: Massage data a bit more for completion block
     func passphrase(fromBytes bytes: [Int], completion: @escaping (([String]?, Error?) -> Void)) {
+        let bipWordLength = 24
         
         executeBlockOnReady {
             
             let input = "new Uint8Array(\(bytes))"
-            let jsToExecute = "JSON.stringify(niceware.bytesToPassphrase(\(input)));"
-            
-            self.nicewareWebView.evaluateJavaScript(jsToExecute, completionHandler: {
+            let jsToExecute = "JSON.stringify(module.exports.passphrase.fromBytesOrHex(\(input)));"
+
+            self.syncCryptoWebView.evaluateJavaScript(jsToExecute, completionHandler: {
                 (result, error) in
-                
-                let jsonArray = JSON(parseJSON: result as? String ?? "").array
-                let words = jsonArray?.map { $0.string }.flatMap { $0 }
-                
-                if words?.count != bytes.count / 2 {
+
+                // Words come in format: \"word1 word2 word3... \"
+                let words = (result as? String ?? "").replacingOccurrences(of: "\"", with: "").components(separatedBy: " ")
+                if words.count != bipWordLength {
                     completion(nil, nil)
                     return
                 }
@@ -135,27 +136,33 @@ class Niceware: JSInjector {
         return combinedHex
     }
     
-    /// Takes English words and returns associated bytes (2 bytes per word)
-    /// fromPassphrase: An array of words : ["administrational", "experimental"]
+    /// Takes English words and returns associated bytes.
+    /// toBytes32: A string of words: "administrational experimental"
     /// returns (via completion): Array of integer values : [0x00, 0xee, 0x4a, 0x42]
     func bytes(fromPassphrase passphrase: Array<String>, completion: (([Int]?, Error?) -> Void)?) {
         // TODO: Add some keyword validation
+
+        let wordsWithSpaces = passphrase.joined(separator: " ")
         executeBlockOnReady {
+            let jsToExecute = "JSON.stringify(module.exports.passphrase.toBytes32(\"\(wordsWithSpaces)\"));"
             
-            let jsToExecute = "JSON.stringify(niceware.passphraseToBytes(\(passphrase)));"
-            
-            self.nicewareWebView.evaluateJavaScript(jsToExecute, completionHandler: {
+            self.syncCryptoWebView.evaluateJavaScript(jsToExecute, completionHandler: {
                 (result, error) in
-                
-                let bytes = JSON(parseJSON: result as? String ?? "")["data"].array?.map({ $0.intValue })
+
+                // Input JSON dictionary is unordered, reordering it by keys.
+                let bytes = JSON(parseJSON: result as? String ?? "").dictionary?.sorted(by: {
+                    guard let firstIntKey = Int($0.key), let secondIntKey = Int($1.key) else { return false }
+                    return firstIntKey < secondIntKey
+                }).map({ $0.value.intValue })
+
                 completion?(bytes, error)
             })
         }
     }
 }
 
-extension Niceware: WKNavigationDelegate {
+extension SyncCrypto: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.isNicewareReady = true
+        self.isSyncCryptoReady = true
     }
 }

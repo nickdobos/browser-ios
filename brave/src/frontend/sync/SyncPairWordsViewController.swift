@@ -155,7 +155,7 @@ class SyncPairWordsViewController: SyncViewController {
             alert()
         })
         
-        Niceware.shared.bytes(fromPassphrase: codes) { (result, error) in
+        SyncCrypto.shared.bytes(fromPassphrase: codes) { (result, error) in
             if result?.count == 0 || error != nil {
                 var errorText = error?.userInfo["WKJavaScriptExceptionMessage"] as? String
                 if let er = errorText, er.contains("Invalid word") {

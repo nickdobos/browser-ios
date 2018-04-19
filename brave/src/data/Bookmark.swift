@@ -154,7 +154,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         bk.customTitle = site?.customTitle ?? bk.customTitle // TODO: Check against empty titles
         bk.isFavorite = bookmark?.isFavorite ?? bk.isFavorite
         bk.isFolder = bookmark?.isFolder ?? bk.isFolder
-        bk.syncUUID = root?.objectId ?? bk.syncUUID ?? Niceware.shared.uniqueSerialBytes(count: 16)
+        bk.syncUUID = root?.objectId ?? bk.syncUUID ?? SyncCrypto.shared.uniqueSerialBytes(count: 16)
         bk.created = site?.creationNativeDate ?? Date()
         bk.lastVisited = site?.lastAccessedNativeDate ?? Date()
         

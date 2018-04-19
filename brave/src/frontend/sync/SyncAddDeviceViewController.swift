@@ -100,13 +100,13 @@ class SyncAddDeviceViewController: SyncViewController {
             return
         }
 
-        let qrSyncSeed = Niceware.shared.joinBytes(fromCombinedBytes: syncSeed)
+        let qrSyncSeed = SyncCrypto.shared.joinBytes(fromCombinedBytes: syncSeed)
         if qrSyncSeed.isEmpty {
             // Error
             return
         }
 
-        Niceware.shared.passphrase(fromBytes: syncSeed) { (words, error) in
+        SyncCrypto.shared.passphrase(fromBytes: syncSeed) { (words, error) in
             guard let words = words, error == nil else {
                 return
             }
