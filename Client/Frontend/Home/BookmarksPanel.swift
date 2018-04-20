@@ -204,6 +204,10 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
         self.bookmarksFRC?.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadData), name: NotificationMainThreadContextSignificantlyChanged, object: nil)
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: NotificationSyncFetched), object: nil, queue: OperationQueue.main, using: { notification in
+            self.reloadData()
+        })
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -211,8 +215,7 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NotificationFirefoxAccountChanged, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NotificationMainThreadContextSignificantlyChanged, object: nil)
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidLoad() {
@@ -397,8 +400,6 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
         guard let obj = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return (nil, nil) }
         return (obj.url != nil ? URL(string: obj.url!) : nil, obj.isFolder ? obj.syncUUID : nil)
     }
-    
-    
 
     fileprivate func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
 
@@ -518,7 +519,12 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
         } else {
             label.textColor = BraveUX.GreyG
             label.numberOfLines = 1
-            label.text = "Last synced 34m ago"
+            
+            if let stamp = Sync.shared.lastFetchedRecordTimestamp {
+                label.text = "Synced \(stamp)."
+            } else {
+                label.text = "Sync in progress..."
+            }
         }
         
         let view = UIView()
@@ -544,6 +550,10 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // Only display sync header on root
+        if currentFolder != nil {
+            return 0
+        }
         return !Sync.shared.isInSyncGroup ? 58 : 28
     }
     

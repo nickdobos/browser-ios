@@ -22,6 +22,7 @@ import SwiftyJSON
  */
 
 let NotificationSyncReady = "NotificationSyncReady"
+let NotificationSyncFetched = "NotificationSyncFetched"
 
 // TODO: Make capitals - pluralize - call 'categories' not 'type'
 public enum SyncRecordType : String {
@@ -263,7 +264,7 @@ class Sync: JSInjector {
     // TODO: Abstract into classes as static members, each object type needs their own sync time stamp!
     // This includes just the last record that was fetched, used to store timestamp until full process has been completed
     //  then set into defaults
-    fileprivate var lastFetchedRecordTimestamp: Int? = 0
+    fileprivate(set) var lastFetchedRecordTimestamp: Int? = 0
     // This includes the entire process: fetching, resolving, insertion/update, and save
     fileprivate var lastSuccessfulSync: Int {
         get {
@@ -481,6 +482,8 @@ extension Sync {
             self.fetch(type: .bookmark)
             self.lastFetchWasTrimmed = false
         }
+        
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationSyncFetched), object: nil)
     }
 
     func deleteSyncUser(_ data: [String: AnyObject]) {
