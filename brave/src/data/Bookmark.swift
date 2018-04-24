@@ -209,11 +209,12 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         bookmark.parentFolderObjectId = parentFolder?.syncUUID
         bookmark.site = site
         
-        let context = DataController.shared.workerContext 
+        let context = isFavorite ? DataController.shared.mainThreadContext : DataController.shared.workerContext
         
         // Fetching bookmarks happen on mainThreadContext but we add it on worker context to work around the 
         // duplicated bookmarks bug.
         // To avoid CoreData crashes we get the parent folder on worker context via its objectID.
+        // Favorites can't be nested, this is only relevant for bookmarks.
         var folderOnWorkerContext: Bookmark?
         if let folder = parentFolder {
             folderOnWorkerContext = (try? context.existingObject(with: folder.objectID)) as? Bookmark

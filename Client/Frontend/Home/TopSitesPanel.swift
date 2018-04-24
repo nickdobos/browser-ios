@@ -103,6 +103,7 @@ class TopSitesPanel: UIViewController, HomePanel {
     }
 
     func existingUserTopSitesConversion() {
+        dataSource.refetch()
         collection.reloadData()
     }
 

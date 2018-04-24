@@ -36,6 +36,10 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
+    func refetch() {
+        try? frc?.performFetch()
+    }
+    
     func favoriteBookmark(at indexPath: IndexPath) -> Bookmark? {
         // Favorites may be not updated at this point, fetching them again.
         try? frc?.performFetch()
