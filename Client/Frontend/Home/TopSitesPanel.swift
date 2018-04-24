@@ -397,6 +397,7 @@ extension TopSitesPanel: ThumbnailCellDelegate {
 
         let deleteAction = UIAlertAction(title: Strings.Remove_Favorite, style: .destructive) { _ in
             fav.remove(save: true)
+            self.dataSource.isEditing = false
         }
 
         let editAction = UIAlertAction(title: Strings.Edit_Favorite, style: .default) { _ in
@@ -408,6 +409,7 @@ extension TopSitesPanel: ThumbnailCellDelegate {
                 if let cTitle = callbackTitle, !cTitle.isEmpty, let cUrl = callbackUrl, !cUrl.isEmpty {
                     fav.update(customTitle: cTitle, url: cUrl, save: true)
                 }
+                self.dataSource.isEditing = false
             }
 
             self.present(editPopup, animated: true, completion: nil)
@@ -418,9 +420,16 @@ extension TopSitesPanel: ThumbnailCellDelegate {
         actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)
-
-        self.present(actionSheet, animated: true) { _ in
-            self.dataSource.isEditing = false
+        
+        if DeviceDetector.isIpad {
+            actionSheet.popoverPresentationController?.permittedArrowDirections = .any
+            actionSheet.popoverPresentationController?.sourceView = thumbnailCell
+            actionSheet.popoverPresentationController?.sourceRect = thumbnailCell.bounds
+            present(actionSheet, animated: true, completion: nil)
+        } else {
+            present(actionSheet, animated: true) { _ in
+                self.dataSource.isEditing = false
+            }
         }
     }
 }
