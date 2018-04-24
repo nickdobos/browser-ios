@@ -323,7 +323,7 @@ class TopSitesPanel: UIViewController, HomePanel {
 // MARK: - Delegates
 extension TopSitesPanel: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let fav = dataSource.frc?.object(at: indexPath) as? Bookmark
+        let fav = dataSource.favoriteBookmark(at: indexPath)
 
         guard let urlString = fav?.url, let url = URL(string: urlString) else { return }
 

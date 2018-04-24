@@ -134,7 +134,10 @@ class UserTextInputAlert {
         }
         
         let okAlertAction = UIAlertAction(title: Strings.OK, style: .default) { _ in
-            actionSelected(input: self.alert.textFields?.first?.text, input2: nil)
+            guard let textFields = self.alert.textFields else { return }
+            
+            let secondOptionalInput = textFields.count > 1 ? textFields[1].text : nil
+            actionSelected(input: textFields.first?.text, input2: secondOptionalInput)
         }
         okAction = okAlertAction
 

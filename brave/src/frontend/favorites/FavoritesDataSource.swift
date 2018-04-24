@@ -35,6 +35,12 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
             log.error("Favorites fetch error")
         }
     }
+    
+    func favoriteBookmark(at indexPath: IndexPath) -> Bookmark? {
+        // Favorites may be not updated at this point, fetching them again.
+        try? frc?.performFetch()
+        return frc?.object(at: indexPath) as? Bookmark
+    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return frc?.fetchedObjects?.count ?? 0
