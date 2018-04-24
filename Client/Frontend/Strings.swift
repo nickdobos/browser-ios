@@ -67,6 +67,11 @@ extension Strings {
     
     public static let NewDevice = NSLocalizedString("Device Name", comment: "Title for new device popup")
     public static let DeviceFolderName = NSLocalizedString("Please enter a name for this device", comment: "Description for new device popup")
+    
+    public static let FavoritesPopupTitle = NSLocalizedString("Top sites are now favorites.", comment: "Title for convert favorites popup")
+    public static let FavoritesPopupDescription = NSLocalizedString("You can now edit and arrange favorites however you like. Add favorites from the share menu when visiting a website.", comment: "Description for convert favorites popup")
+    public static let Convert = NSLocalizedString("Convert", comment: "Title for convert favorites popup convert button")
+    public static let UseDefaults = NSLocalizedString("Use Defaults", comment: "Title for convert favorites popup use defaults button")
 
     public static let RequestSwitchAppsTitle = NSLocalizedString("Allow link to switch apps?", comment: "")
     public static let RequestSwitchAppsMessage = NSLocalizedString("%@ will launch an external application", comment: "")

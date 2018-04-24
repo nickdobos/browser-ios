@@ -600,15 +600,15 @@ class BrowserViewController: UIViewController {
     }
 
     func presentTopSitesToFavoritesChange() {
-        let popup = AlertPopupView(image: UIImage(named: "icon_top_fav"), title: "Top sites are now favorites.", message: "You can now edit and arrange favorites however you like. Add favorites from the share menu when visiting a website.")
+        let popup = AlertPopupView(image: UIImage(named: "icon_top_fav"), title: Strings.FavoritesPopupTitle, message: Strings.FavoritesPopupDescription)
 
-        popup.addButton(title: "Use Defaults") { () -> PopupViewDismissType in
+        popup.addButton(title: Strings.UseDefaults) { () -> PopupViewDismissType in
             FavoritesHelper.addDefaultFavorites()
             NotificationCenter.default.post(name: NotificationTopSitesConversion, object: nil)
             return .flyDown
         }
 
-        popup.addDefaultButton(title: "Convert") { () -> PopupViewDismissType in
+        popup.addDefaultButton(title: Strings.Convert) { () -> PopupViewDismissType in
             self.topSitesQuery().uponQueue(DispatchQueue.main) { sites in
                 FavoritesHelper.convertToBookmarks(sites)
                 NotificationCenter.default.post(name: NotificationTopSitesConversion, object: nil)
