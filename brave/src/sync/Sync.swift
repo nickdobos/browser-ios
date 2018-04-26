@@ -540,6 +540,7 @@ extension Sync {
         if recordType == .bookmark {
             // Store the last record's timestamp, to know what timestamp to pass in next time if this one does not fail
             self.lastFetchedRecordTimestamp = data?.lastFetchedTimestamp
+            debugPrint("sync fetched last timestamp \(self.lastFetchedRecordTimestamp ?? 0)")
             self.lastFetchWasTrimmed = data?.isTruncated ?? false
         }
         

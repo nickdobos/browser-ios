@@ -520,10 +520,8 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
             label.textColor = BraveUX.GreyG
             label.numberOfLines = 1
             
-            if let stamp = Sync.shared.lastFetchedRecordTimestamp {
-                label.text = "Synced \(stamp)."
-            } else {
-                label.text = "Sync in progress..."
+            if Sync.shared.lastFetchedRecordTimestamp != nil {
+                label.text = "Syncing..."
             }
         }
         
@@ -554,6 +552,12 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
         if currentFolder != nil {
             return 0
         }
+        
+        // Sync is connected but nothing is being synced.
+        if Sync.shared.isInSyncGroup && Sync.shared.lastFetchedRecordTimestamp == nil {
+            return 0
+        }
+        
         return !Sync.shared.isInSyncGroup ? 58 : 28
     }
     

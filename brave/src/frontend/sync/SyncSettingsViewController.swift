@@ -125,7 +125,6 @@ class SyncSettingsViewController: AppSettingsTableViewController {
     }
     
     func SEL_done() {
-        debugPrint("modal: \(isModalInPopover)")
         guard let rootVC = navigationController?.viewControllers.first else { return }
         if rootVC.isKind(of: BraveSettingsView.self) {
             navigationController?.popToRootViewController(animated: true)
