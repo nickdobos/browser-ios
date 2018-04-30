@@ -342,6 +342,7 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
 
     func addFolder(titled title: String) {
         Bookmark.add(url: nil, title: nil, customTitle: title, parentFolder: currentFolder, isFolder: true)
+        tableView.scrollToRow(at: IndexPath(item: 0, section: 0), at: UITableViewScrollPosition.bottom, animated: true)
     }
     
     func onEditBookmarksButton() {
