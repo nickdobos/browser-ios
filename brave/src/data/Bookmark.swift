@@ -121,7 +121,9 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
             DataController.saveContext(context: self.managedObjectContext)
         }
         
-        Sync.shared.sendSyncRecords(action: .update, records: [self])
+        if !isFavorite {
+            Sync.shared.sendSyncRecords(action: .update, records: [self])
+        }
     }
 
     static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
@@ -181,7 +183,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
             DataController.saveContext(context: context)
         }
         
-        if sendToSync {
+        if sendToSync && !bk.isFavorite {
             // Submit to server
             Sync.shared.sendSyncRecords(action: .create, records: [bk])
         }
@@ -381,7 +383,7 @@ extension Bookmark {
     
     // TODO: Remove
     static func getAllBookmarks(context: NSManagedObjectContext) -> [Bookmark] {
-        return get(predicate: nil, context: context) ?? [Bookmark]()
+        return get(predicate: NSPredicate(format: "isFavorite == NO"), context: context) ?? [Bookmark]()
     }
 }
 
