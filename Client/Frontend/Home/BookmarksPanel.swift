@@ -104,7 +104,7 @@ class BookmarkEditingViewController: FormViewController {
     let BOOKMARK_FOLDER_ROW_TAG:String = "BOOKMARK_FOLDER_ROW_TAG"
 
     var titleRow:TextRow?
-    var urlRow:TextRow?
+    var urlRow: URLRow?
     
     init(bookmarksPanel: BookmarksPanel, indexPath: IndexPath, bookmark: Bookmark) {
         super.init(nibName: nil, bundle: nil)
@@ -128,7 +128,7 @@ class BookmarkEditingViewController: FormViewController {
             block(self)
         }
         
-        self.bookmark.update(customTitle: self.titleRow?.value, url: self.urlRow?.value, save: true)
+        self.bookmark.update(customTitle: self.titleRow?.value, url: self.urlRow?.value?.absoluteString, save: true)
     }
     
     var isEditingFolder:Bool {
@@ -153,10 +153,10 @@ class BookmarkEditingViewController: FormViewController {
         
         // Only show URL option for bookmarks, not folders
         if !isEditingFolder {
-            nameSection <<< TextRow() { row in
+            nameSection <<< URLRow() { row in
                 row.tag = BOOKMARK_URL_ROW_TAG
                 row.title = Strings.URL
-                row.value = bookmark.url
+                row.value = URL(string: bookmark.url ?? "")
                 self.urlRow = row
             }
         }
