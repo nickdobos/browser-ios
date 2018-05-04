@@ -96,8 +96,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     func update(syncRecord record: SyncRecord?) {
         guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
         title = site.title
-        customTitle = site.customTitle
-        url = site.location
+        update(customTitle: site.customTitle, url: site.location)
         lastVisited = Date(timeIntervalSince1970:(Double(site.lastAccessedTime ?? 0) / 1000.0))
         syncParentUUID = bookmark.parentFolderObjectId
         // No auto-save, must be handled by caller if desired
@@ -116,6 +115,11 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         
         if let u = url, !u.isEmpty {
             self.url = url
+            if let theURL = URL(string: u), let context = managedObjectContext {
+                domain = Domain.getOrCreateForUrl(theURL, context: context)
+            } else {
+                domain = nil
+            }
         }
         
         if save {
