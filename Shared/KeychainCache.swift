@@ -55,7 +55,7 @@ open class KeychainCache<T: JSONLiteralConvertible> {
         // TODO: PII logging.
         if let value = value,
             let jsonString = value.asJSON().stringValue() {
-            KeychainWrapper.sharedAppContainerKeychain.set(jsonString, forKey: "\(branch).\(label)")
+            KeychainWrapper.sharedAppContainerKeychain.set(jsonString, forKey: "\(branch).\(label)", withAccessibility: .afterFirstUnlockThisDeviceOnly)
         } else {
             KeychainWrapper.sharedAppContainerKeychain.removeObject(forKey: "\(branch).\(label)")
         }

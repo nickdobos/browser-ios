@@ -210,7 +210,7 @@ class Sync: JSInjector {
                 return nil
             }
             
-            return KeychainWrapper.standard.string(forKey: prefNameSeed)
+            return KeychainWrapper.standard.string(forKey: prefNameSeed, withAccessibility: .afterFirstUnlockThisDeviceOnly)
         }
         set(value) {
             // TODO: Move syncSeed validation here, remove elsewhere
@@ -222,7 +222,7 @@ class Sync: JSInjector {
             }
             
             if let value = value {
-                KeychainWrapper.standard.set(value, forKey: prefNameSeed)
+                KeychainWrapper.standard.set(value, forKey: prefNameSeed, withAccessibility: .afterFirstUnlockThisDeviceOnly)
                 // Here, we are storing a value to signify a group has been joined
                 //  this is _only_ used on a re-installation to know that the app was deleted and re-installed
                 UserDefaults.standard.set(true, forKey: prefNameSeed)
