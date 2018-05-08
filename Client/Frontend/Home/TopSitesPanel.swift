@@ -398,6 +398,12 @@ extension TopSitesPanel: ThumbnailCellDelegate {
 
         let deleteAction = UIAlertAction(title: Strings.Remove_Favorite, style: .destructive) { _ in
             fav.remove(save: true)
+            
+            // Remove cached icon.
+            if let urlString = fav.url, let url = URL(string: urlString) {
+                ImageCache.shared.remove(url, type: .square)
+            }
+            
             self.dataSource.isEditing = false
         }
 

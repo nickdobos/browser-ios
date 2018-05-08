@@ -454,6 +454,7 @@ class BraveWebView: UIWebView {
             LegacyUserContentController.injectJsIntoAllFrames(me, script: "document.body.style.webkitTouchCallout='none'")
 
             me.stringByEvaluatingJavaScript(from: "console.log('get favicons'); __firefox__.favicons.getFavicons()")
+            me.stringByEvaluatingJavaScript(from: "console.log('get site color'); __firefox__.sitecolor.getSiteColor()")
 
             postAsyncToMain(0.3) { // the longer we wait, the more reliable the result (even though this script does polling for a result)
                 [weak self] in

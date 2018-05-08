@@ -104,6 +104,9 @@ class Browser: NSObject, BrowserWebViewDelegate {
     var restoring: Bool = false
     var pendingScreenshot = false
     
+    // Tab color
+    var color: UIColor?
+    
     var tabID: String?
 
     /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.

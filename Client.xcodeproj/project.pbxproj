@@ -308,6 +308,8 @@
 		5C82452C1E68E95600D3CA09 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C82452B1E68E95600D3CA09 /* AVFoundation.framework */; };
 		5C94B8ED1F58A87800DE5FEE /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94B8EC1F58A87800DE5FEE /* ImageCache.swift */; };
 		5C94B8EE1F58B20300DE5FEE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39FA16B1A83E17800EE869C /* CoreGraphics.framework */; };
+		5C94D91920A09D1C00414AC1 /* ThemeColor.js in Resources */ = {isa = PBXBuildFile; fileRef = 5C94D91820A09D1C00414AC1 /* ThemeColor.js */; };
+		5C94D92F20A0E2CE00414AC1 /* SiteColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C94D92E20A0E2CE00414AC1 /* SiteColorManager.swift */; };
 		5CD7F38E1E3EFBF100A12BB9 /* FaviconMO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7F38D1E3EFBF100A12BB9 /* FaviconMO.swift */; };
 		5CD7F3901E3FB7FA00A12BB9 /* TabMO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7F38F1E3FB7FA00A12BB9 /* TabMO.swift */; };
 		5CDC06291FC64EDA00E54C95 /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC06281FC64EDA00E54C95 /* AlertPopupView.swift */; };
@@ -1026,11 +1028,11 @@
 		0A3AA90B1FFF8C3100855082 /* FavoritesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesDataSource.swift; sourceTree = "<group>"; };
 		0A3D9E64207FBC290034D5F0 /* crypto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = crypto.js; path = Carthage/Checkouts/crypto/browser/crypto.js; sourceTree = SOURCE_ROOT; };
 		0A4932882019FC4800EB7DB8 /* ViewUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtil.swift; sourceTree = "<group>"; };
-		0A6365D82012011700371C27 /* FavoritesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesHelper.swift; sourceTree = "<group>"; };
-		0A7C92BD201F3FDA0070BF98 /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SyncViewController.swift; path = brave/src/frontend/sync/SyncViewController.swift; sourceTree = "<group>"; };
 		0A59F2C9207406D900B0779F /* GlobalSign_r3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSign_r3.cer; sourceTree = "<group>"; };
 		0A59F2CA207406D900B0779F /* GlobalSign_r1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSign_r1.cer; sourceTree = "<group>"; };
 		0A59F2E520740AEB00B0779F /* DigiCertHighAssurance.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = DigiCertHighAssurance.cer; sourceTree = "<group>"; };
+		0A6365D82012011700371C27 /* FavoritesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesHelper.swift; sourceTree = "<group>"; };
+		0A7C92BD201F3FDA0070BF98 /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SyncViewController.swift; path = brave/src/frontend/sync/SyncViewController.swift; sourceTree = "<group>"; };
 		0A7D73982076BAAD00BD66E3 /* CustomHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderData.swift; sourceTree = "<group>"; };
 		0A8053951FC59D82008D6822 /* DAU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAU.swift; sourceTree = "<group>"; };
 		0A8053971FC59D93008D6822 /* DauTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DauTest.swift; sourceTree = "<group>"; };
@@ -1300,6 +1302,9 @@
 		5C78D3E31F69DF5100E0C73B /* PinController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PinController.swift; path = brave/src/frontend/PinController.swift; sourceTree = "<group>"; };
 		5C82452B1E68E95600D3CA09 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5C94B8EC1F58A87800DE5FEE /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageCache.swift; path = brave/src/util/ImageCache.swift; sourceTree = "<group>"; };
+		5C94D91820A09D1C00414AC1 /* ThemeColor.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = ThemeColor.js; path = Client/Assets/ThemeColor.js; sourceTree = "<group>"; };
+		5C94D92E20A0E2CE00414AC1 /* SiteColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteColorManager.swift; path = Client/Frontend/Browser/SiteColorManager.swift; sourceTree = "<group>"; };
+		5C94D93020A0E8D300414AC1 /* Model7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model7.xcdatamodel; sourceTree = "<group>"; };
 		5CD164121EDFB7080037ECCC /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = ThirdParty/SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
 		5CD7F38D1E3EFBF100A12BB9 /* FaviconMO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FaviconMO.swift; path = brave/src/data/FaviconMO.swift; sourceTree = "<group>"; };
 		5CD7F38F1E3FB7FA00A12BB9 /* TabMO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabMO.swift; path = brave/src/data/TabMO.swift; sourceTree = "<group>"; };
@@ -2104,6 +2109,7 @@
 				85E73012CDCAD318AC829281 /* URIFixup.swift */,
 				0C1EC8C1DDF251BC04F959BC /* URLBarView.swift */,
 				FD0312A6613A6023990734CF /* WindowCloseHelper.swift */,
+				5C94D92E20A0E2CE00414AC1 /* SiteColorManager.swift */,
 			);
 			name = Browser;
 			sourceTree = "<group>";
@@ -2395,6 +2401,7 @@
 				E76112E70EDA47CD3A7F2845 /* SpotlightHelper.js */,
 				15CBF8A3328920BDA39ACE03 /* topdomains.txt */,
 				18CF882B686F0A49E665B882 /* WindowCloseHelper.js */,
+				5C94D91820A09D1C00414AC1 /* ThemeColor.js */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -4302,6 +4309,7 @@
 				EBDB7D571E14337800D744C7 /* ios-sync.js in Resources */,
 				13657B6789F5024F64E16739 /* PrintHelper.js in Resources */,
 				9238CC0C5284146DC56706EF /* default.txt in Resources */,
+				5C94D91920A09D1C00414AC1 /* ThemeColor.js in Resources */,
 				EB8F56A11DD13DF300679A78 /* FiraSans-Regular.ttf in Resources */,
 				0A03FFE81FCDF0C400DF32C9 /* make_perl_groups.pl in Resources */,
 				F77753583610CDE305C0EE17 /* list.txt in Resources */,
@@ -4691,6 +4699,7 @@
 				0A7C92BE201F3FDA0070BF98 /* SyncViewController.swift in Sources */,
 				86D123F20829658238ECF3A8 /* ODRefreshControl.m in Sources */,
 				778AC5C1DE79E2AE7550D92E /* PicklistSetting.swift in Sources */,
+				5C94D92F20A0E2CE00414AC1 /* SiteColorManager.swift in Sources */,
 				E9396A65893407CA10034653 /* BraveRightSidePanel.swift in Sources */,
 				41C8C73403C41EA2B3504989 /* MainSidePanelViewController.swift in Sources */,
 				84A180A158F0E79DEC227E41 /* SidePanelBaseViewController.swift in Sources */,
@@ -5911,6 +5920,7 @@
 		5D3892531E98108F00F959E6 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5C94D93020A0E8D300414AC1 /* Model7.xcdatamodel */,
 				0A3316501FFD4C6B00BFC542 /* Model6.xcdatamodel */,
 				5C062FD91F76583900D51BC7 /* Model5.xcdatamodel */,
 				5C2D8B271F72D4F100B1C311 /* Model4.xcdatamodel */,
@@ -5918,7 +5928,7 @@
 				5D3892561E9810B400F959E6 /* Model2.xcdatamodel */,
 				5D3892541E98108F00F959E6 /* Model.xcdatamodel */,
 			);
-			currentVersion = 0A3316501FFD4C6B00BFC542 /* Model6.xcdatamodel */;
+			currentVersion = 5C94D93020A0E8D300414AC1 /* Model7.xcdatamodel */;
 			name = Model.xcdatamodeld;
 			path = brave/src/data/Model.xcdatamodeld;
 			sourceTree = "<group>";

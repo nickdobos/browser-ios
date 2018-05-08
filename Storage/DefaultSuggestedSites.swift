@@ -77,7 +77,7 @@ open class DefaultSuggestedSites {
             ),
             SuggestedSiteData(
                 url: "https://coinmarketcap.com/",
-                bgColor: "0xDFCCB4",
+                bgColor: "0xF7F8F9",
                 imageUrl: "asset://suggestedsites_coinmarketcap",
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 633,

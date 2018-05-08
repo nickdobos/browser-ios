@@ -6,6 +6,12 @@ import Shared
 
 private let log = Logger.browserLogger
 
+struct FallbackIconUX {
+    static let minSize = CGSize(width: 120, height: 120)
+    static let size = CGSize(width: 250, height: 250)
+    static let color: UIColor = BraveUX.GreyE
+}
+
 enum FavoritesTileType {
     /// Predefinied tile color and custom icon, used for most popular websites.
     case preset
@@ -20,6 +26,7 @@ class FavoritesTileDecorator {
     let normalizedHost: String
     let cell: ThumbnailCell
     let indexPath: IndexPath
+    let color: UIColor?
     weak var collection: UICollectionView?
 
     /// Returns SuggestedSite for given tile or nil if no suggested sites found.
@@ -41,10 +48,11 @@ class FavoritesTileDecorator {
         }
     }
 
-    init(url: URL, cell: ThumbnailCell, indexPath: IndexPath) {
+    init(url: URL, cell: ThumbnailCell, indexPath: IndexPath, color: UIColor? = nil) {
         self.url = url
         self.cell = cell
         self.indexPath = indexPath
+        self.color = color
         normalizedHost = url.normalizedHost ?? ""
     }
 
@@ -109,13 +117,30 @@ class FavoritesTileDecorator {
             else {
                 postAsyncToMain {
                     cell.imageView.sd_setImage(with: iconUrl, completed: { (img, err, type, url) in
-                        guard let img = img else {
-                            // avoid retrying to find an icon when none can be found, hack skips FaviconFetch
-                            ImageCache.shared.cache(ThumbnailCellUX.PlaceholderImage!, url: cacheWithUrl, type: .square, callback: nil)
-                            cell.imageView.image = ThumbnailCellUX.PlaceholderImage
-                            return
+                        var finalImage = img
+                        var useFallback = false
+
+                        if img == nil {
+                            useFallback = true
+                        } else if let img = img, img.size.width < FallbackIconUX.minSize.width && img.size.height < FallbackIconUX.minSize.height {
+                            useFallback = true
                         }
-                        ImageCache.shared.cache(img, url: cacheWithUrl, type: .square, callback: nil)
+
+                        if useFallback, let host = self.url.host, let letter = host.replacingOccurrences(of: "www.", with: "").first {
+                            var tabColor = FallbackIconUX.color
+                            
+                            // Only use stored color if it's not too light.
+                            if let color = self.color, !color.isLight {
+                                tabColor = color
+                            }
+                            
+                            finalImage = FavoritesHelper.fallbackIcon(withLetter: String(letter), color: tabColor, andSize: FallbackIconUX.size)
+                        }
+
+                        if let finalImage = finalImage {
+                            ImageCache.shared.cache(finalImage, url: cacheWithUrl, type: .square, callback: nil)
+                            cell.imageView.image = finalImage
+                        }
                     })
                 }
             }

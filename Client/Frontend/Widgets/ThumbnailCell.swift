@@ -103,6 +103,7 @@ class ThumbnailCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = ThumbnailCellUX.CornerRadius
         imageView.layer.borderColor = ThumbnailCellUX.BorderColor.cgColor
+        imageView.layer.borderWidth = ThumbnailCellUX.BorderWidth
         imageView.layer.minificationFilter = kCAFilterTrilinear
         imageView.layer.magnificationFilter = kCAFilterNearest
         return imageView
@@ -125,8 +126,8 @@ class ThumbnailCell: UICollectionViewCell {
         editButton.center = CGPoint(x: buttonCenterX, y: buttonCenterY)
         editButton.layer.cornerRadius = editButton.bounds.width/2
         editButton.layer.masksToBounds = true
-        return editButton    }()
-
+        return editButton
+    }()
 
     override var isSelected: Bool {
         didSet { updateSelectedHighlightedState() }

@@ -45,11 +45,33 @@ struct FavoritesHelper {
         }
     }
 
-    static func add(url: URL, title: String?) {
-        Bookmark.add(url: url, title: title, isFavorite: true)
+    static func add(url: URL, title: String?, color: UIColor?) {
+        Bookmark.add(url: url, title: title, isFavorite: true, color: color)
     }
 
     static func isAlreadyAdded(_ url: URL) -> Bool{
         return Bookmark.contains(url: url, getFavorites: true, context: DataController.shared.mainThreadContext)
+    }
+    
+    static func fallbackIcon(withLetter letter: String, color: UIColor, andSize iconSize: CGSize) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: iconSize)
+        return  renderer.image { ctx in
+            let rectangle = CGRect(x: 0, y: 0, width: iconSize.width, height: iconSize.height)
+            
+            ctx.cgContext.addRect(rectangle)
+            ctx.cgContext.setFillColor(color.cgColor)
+            ctx.cgContext.drawPath(using: .fillStroke)
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            
+            let attrs = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Thin", size: iconSize.height-90) ?? UIFont.systemFont(ofSize: iconSize.height-90, weight: UIFontWeightThin),
+                         NSParagraphStyleAttributeName: paragraphStyle,
+                         NSForegroundColorAttributeName: BraveUX.White]
+            
+            let string: NSString = NSString(string: "\(letter)".uppercased())
+            let size = string.size(attributes: attrs)
+            string.draw(at: CGPoint(x: (iconSize.width-size.width)/2, y: (iconSize.height-size.height)/2), withAttributes: attrs)
+        }
     }
 }

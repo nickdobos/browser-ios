@@ -22,6 +22,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     @NSManaged var created: Date?
     @NSManaged var order: Int16
     @NSManaged var tags: [String]?
+    @NSManaged var color: String?
     
     /// Should not be set directly, due to specific formatting required, use `syncUUID` instead
     /// CD does not allow (easily) searching on transformable properties, could use binary, but would still require tranformtion
@@ -137,7 +138,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     }
     
     // Should not be used for updating, modify to increase protection
-    class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, context: NSManagedObjectContext) -> Bookmark? {
+    class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil, context: NSManagedObjectContext) -> Bookmark? {
         let bookmark = root
         let site = bookmark?.site
      
@@ -158,6 +159,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         // Use new values, fallback to previous values
         bk.url = site?.location ?? bk.url
         bk.title = site?.title ?? bk.title
+        bk.color = (color ?? BraveUX.GreyE).toHexString()
         bk.customTitle = site?.customTitle ?? bk.customTitle // TODO: Check against empty titles
         bk.isFavorite = bookmark?.isFavorite ?? bk.isFavorite
         bk.isFolder = bookmark?.isFolder ?? bk.isFolder
@@ -203,7 +205,8 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
                        customTitle: String? = nil, // Folders only use customTitle
                        parentFolder:Bookmark? = nil,
                        isFolder: Bool = false,
-                       isFavorite: Bool = false) -> Bookmark? {
+                       isFavorite: Bool = false,
+                       color: UIColor? = nil) -> Bookmark? {
         
         let site = SyncSite()
         site.title = title
@@ -229,7 +232,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         
         // Using worker context here, this propogates up, and merged into main.
         // There is some odd issue with duplicates when using main thread
-        return self.add(rootObject: bookmark, save: true, sendToSync: true, parentFolder: folderOnWorkerContext, context: context)
+        return self.add(rootObject: bookmark, save: true, sendToSync: true, parentFolder: folderOnWorkerContext, color: color, context: context)
     }
     
     // TODO: Migration syncUUIDS still needs to be solved
