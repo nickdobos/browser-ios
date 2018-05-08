@@ -7,7 +7,6 @@ import Shared
 
 class BraveShieldStatsView: UIView, Themeable {
     fileprivate let millisecondsPerItem: Int32 = 50
-    fileprivate let line = UIView()
     
     lazy var adsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
@@ -44,15 +43,6 @@ class BraveShieldStatsView: UIView, Themeable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(line)
-        line.backgroundColor = PrivateBrowsing.singleton.isOn ? BraveUX.GreyI : BraveUX.GreyB
-        line.snp.makeConstraints { (make) -> Void in
-            make.bottom.equalTo(0).offset(-0.5)
-            make.height.equalTo(0.5)
-            make.left.equalTo(0)
-            make.right.equalTo(0)
-        }
         
         for s: StatView in stats {
             addSubview(s)
