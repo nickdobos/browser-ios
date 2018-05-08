@@ -24,23 +24,38 @@ class UserReferralProgram {
 
         guard let host = getPlistString(for: UserReferralProgram.hostPlistKey),
             let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey), let prefs = getApp().profile?.prefs else {
-            log.error("Urp init error, failed to get values from Brave.plist.")
-            return nil
+                log.error("Urp init error, failed to get values from Brave.plist.")
+                return nil
         }
 
         guard let urpService = UrpService(host: host, apiKey: apiKey) else { return nil }
+
+        UrpLog.log("URP init, host: \(host), api key: \(apiKey)")
 
         self.prefs = prefs
         self.service = urpService
     }
 
-    func referralLookup() {
+    /// Looks for referral and returns its landing page if possible.
+    func referralLookup(completion: @escaping (String?) -> ()) {
         UrpLog.log("first run referral lookup")
 
         service.referralCodeLookup { referral, _ in
             guard let ref = referral else {
+                self.getCustomHeaders()
                 log.info("No referral code found")
                 UrpLog.log("No referral code found")
+                return
+            }
+
+            if ref.isExtendedUrp() {
+                if let headers = ref.customHeaders {
+                    self.prefs.setObject(NSKeyedArchiver.archivedData(withRootObject: headers), forKey: CustomHeaderData.prefsKey)
+                }
+
+                completion(ref.offerPage)
+                UrpLog.log("Extended referral code found, opening landing page: \(ref.offerPage ?? "404")")
+                // We do not want to persist referral data for extended URPs
                 return
             }
 
@@ -50,6 +65,8 @@ class UserReferralProgram {
             UrpLog.log("Found referral: downloadId: \(ref.downloadId), code: \(ref.referralCode)")
             // In case of network errors or getting `isFinalized = false`, we retry the api call.
             self.initRetryPingConnection(numberOfTimes: 30)
+
+            completion(nil)
         }
     }
 
@@ -75,9 +92,9 @@ class UserReferralProgram {
         }
 
         guard let downloadId = prefs.stringForKey(ReferralData.PrefKeys.downloadId) else {
-                log.info("Could not retrieve download id model from preferences.")
-                UrpLog.log("Update ping, no download id found.")
-                return
+            log.info("Could not retrieve download id model from preferences.")
+            UrpLog.log("Update ping, no download id found.")
+            return
         }
 
         guard let checkDate = self.prefs.objectForKey(UserReferralProgram.urpDateCheckPrefsKey) as TimeInterval? else {
@@ -152,6 +169,35 @@ class UserReferralProgram {
 
             return referralCode
         }
+        return nil
+    }
+
+    func getCustomHeaders() {
+        service.fetchCustomHeaders() { headers, error in
+            if headers.isEmpty { return }
+
+            self.prefs.setObject(NSKeyedArchiver.archivedData(withRootObject: headers), forKey: CustomHeaderData.prefsKey)
+        }
+    }
+
+    /// Checks if a custom header should be added to the request and returns its value and field.
+    class func shouldAddCustomHeader(for request: URLRequest) -> (value: String, field: String)? {
+        guard let prefs = BraveApp.getPrefs(), let customHeadersAsData: Data = prefs.objectForKey(CustomHeaderData.prefsKey) as Any? as? Data,
+            let customHeaders = NSKeyedUnarchiver.unarchiveObject(with: customHeadersAsData) as? [CustomHeaderData],
+            let hostUrl = request.url?.host else { return nil }
+
+        for customHeader in customHeaders {
+            // There could be an egde case when we would have two domains withing different domain groups, that would
+            // cause to return only the first domain-header it approaches.
+            for domain in customHeader.domainList {
+                if hostUrl.contains(domain) {
+                    if let allFields = request.allHTTPHeaderFields, !allFields.keys.contains(customHeader.headerField) {
+                        return (customHeader.headerValue, customHeader.headerField)
+                    }
+                }
+            }
+        }
+
         return nil
     }
 }

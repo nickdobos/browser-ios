@@ -755,7 +755,6 @@ extension BraveWebView: UIWebViewDelegate {
         return true
     }
 
-
     func webViewDidStartLoad(_ webView: UIWebView) {
         backForwardList.update()
         
