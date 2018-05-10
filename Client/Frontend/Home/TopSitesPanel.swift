@@ -12,7 +12,7 @@ import Deferred
 private let log = Logger.browserLogger
 
 struct TopSitesPanelUX {
-    static let statsHeight: CGFloat = 130.0
+    static let statsHeight: CGFloat = 110.0
     static let statsBottomMargin: CGFloat = 5
 }
 
