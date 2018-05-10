@@ -33,6 +33,11 @@ class PinViewController: UIViewController, PinViewControllerDelegate {
     var delegate: PinViewControllerDelegate?
     var pinView: PinLockView!
     
+    static var isBrowserLockEnabled: Bool {
+        let profile = getApp().profile
+        return profile?.prefs.boolForKey(kPrefKeySetBrowserLock) == true || profile?.prefs.boolForKey(kPrefKeyPopupForBrowserLock) == true
+    }
+    
     override func loadView() {
         super.loadView()
         
