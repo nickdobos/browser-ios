@@ -219,8 +219,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         bookmark.parentFolderObjectId = parentFolder?.syncUUID
         bookmark.site = site
         
-        // TODO: Why?
-        let context = isFavorite ? DataController.shared.mainThreadContext : DataController.shared.workerContext
+        let context = DataController.shared.mainThreadContext
         
         // Fetching bookmarks happen on mainThreadContext but we add it on worker context to work around the 
         // duplicated bookmarks bug.

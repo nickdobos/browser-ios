@@ -49,7 +49,7 @@ class DataController: NSObject {
         return self.persistentContainer.newBackgroundContext()
     }()
     
-    static func remove(object: NSManagedObject, context: NSManagedObjectContext = DataController.shared.persistentContainer.viewContext) {
+    static func remove(object: NSManagedObject, context: NSManagedObjectContext = DataController.shared.mainThreadContext) {
         context.delete(object)
         DataController.saveContext(context: context)
     }
