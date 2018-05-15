@@ -78,7 +78,7 @@ class MigrateData: NSObject {
         let query: String = "SELECT id, domain, showOnTopSites FROM domains"
         var results: OpaquePointer? = nil
         
-        let context = DataController.shared.newWorkerContext()
+        let context = DataController.shared.workerContext
         if sqlite3_prepare_v2(db, query, -1, &results, nil) == SQLITE_OK {
             while sqlite3_step(results) == SQLITE_ROW {
                 let id = sqlite3_column_int(results, 0)
@@ -206,7 +206,7 @@ class MigrateData: NSObject {
         let query: String = "SELECT guid, type, parentid, title, description, bmkUri, faviconID FROM bookmarksLocal WHERE (id > 4 AND is_deleted = 0) ORDER BY type DESC"
         var results: OpaquePointer? = nil
         
-        let context = DataController.shared.newWorkerContext()
+        let context = DataController.shared.workerContext
         if sqlite3_prepare_v2(db, query, -1, &results, nil) == SQLITE_OK {
             var relationshipHash: [String: Bookmark] = [:]
             while sqlite3_step(results) == SQLITE_ROW {

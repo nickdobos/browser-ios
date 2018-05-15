@@ -78,7 +78,7 @@ class Device: NSManagedObject, Syncable {
         
         if sharedCurrentDevice == nil {
             // TODO: Check context here, seems odd
-            let context = DataController.shared.newWorkerContext()
+            let context = DataController.shared.workerContext
             // Create device
             let predicate = NSPredicate(format: "isCurrentDevice = YES")
             // Should only ever be one current device!
@@ -97,7 +97,7 @@ class Device: NSManagedObject, Syncable {
     }
     
     class func deleteAll(completionOnMain: ()->()) {
-        let context = DataController.shared.newWorkerContext()
+        let context = DataController.shared.workerContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = Device.entity(context: context)

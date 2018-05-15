@@ -623,7 +623,7 @@ class BrowserViewController: UIViewController {
     fileprivate func topSitesQuery() -> Deferred<[Site]> {
         let result = Deferred<[Site]>()
 
-        let context = DataController.shared.newWorkerContext()
+        let context = DataController.shared.workerContext
         context.perform {
             var sites = [Site]()
 

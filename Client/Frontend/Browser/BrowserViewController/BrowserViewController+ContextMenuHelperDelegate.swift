@@ -221,7 +221,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
         }
         let openTitle = String(format: Strings.Open_All_Bookmarks, bookmarks.count)
         return UIAlertAction(title: openTitle, style: UIAlertActionStyle.default) { (action: UIAlertAction) -> Void in
-            let context = DataController.shared.newWorkerContext()
+            let context = DataController.shared.workerContext
             context.perform {
                 for bookmark in bookmarks {
                     guard let urlString = bookmark.url else { continue }

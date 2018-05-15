@@ -166,7 +166,7 @@ class Domain: NSManagedObject {
 
     // TODO: I think we can maybe delete this
     class func deleteNonBookmarkedAndClearSiteVisits(_ completionOnMain: @escaping ()->()) {
-        let context = DataController.shared.newWorkerContext()
+        let context = DataController.shared.workerContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = Domain.entity(context)

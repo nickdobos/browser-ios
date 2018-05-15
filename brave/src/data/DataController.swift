@@ -3,6 +3,7 @@
 import UIKit
 import CoreData
 import Shared
+//import XCGLogger
 
 //      Now that sync is disabled, we hvae fallen back to the original design (from floriankugler)
 //      Will update template once issues are ironed out
@@ -44,15 +45,9 @@ class DataController: NSObject {
         return persistentContainer.viewContext
     }
     
-    func newWorkerContext() -> NSManagedObjectContext {
-        return persistentContainer.newBackgroundContext()
-    }
-    
-//    var workerContext: NSManagedObjectContext {
-//        return persistentContainer.newBackgroundContext()
-//    }
-    
-
+    lazy var workerContext: NSManagedObjectContext = {
+        return self.persistentContainer.newBackgroundContext()
+    }()
     
     static func remove(object: NSManagedObject, context: NSManagedObjectContext = DataController.shared.persistentContainer.viewContext) {
         context.delete(object)
@@ -60,54 +55,22 @@ class DataController: NSObject {
     }
 
     static func saveContext(context: NSManagedObjectContext?) {
-//        guard let context = context else {
-//            print("No context on save")
-//            return
-//        }
-//
-//        if context === DataController.shared.writeContext {
-//            print("Do not use with the write moc, this save is handled internally here.")
-//            return
-//        }
-//
-//        // TODO: Clean this up
-//        context.perform {
-//            if !context.hasChanges {
-//                return
-//            }
-//
-//            do {
-//                try context.save()
-//
-//                DataController.shared.writeContext.perform {
-//                    if !DataController.shared.writeContext.hasChanges {
-//                        return
-//                    }
-//                    do {
-//                        try DataController.shared.writeContext.save()
-//                    } catch {
-//                        fatalError("Error saving DB to disk: \(error)")
-//                    }
-//                }
-//            } catch {
-//                fatalError("Error saving DB: \(error)")
-//            }
-//        }
+        guard let context = context else {
+            //log.debug("No context on save")
+            return
+        }
+        
+        context.perform {
+            if !context.hasChanges {
+                return
+            }
+
+            do {
+                try context.save()
+                
+            } catch {
+                fatalError("Error saving DB: \(error)")
+            }
+        }
     }
 }
-
-//extension NSManagedObjectContext {
-//    static var mainThreadContext: NSManagedObjectContext {
-//        return DataController.shared.mainThreadContext
-//    }
-//    
-//    static var workerThreadContext: NSManagedObjectContext {
-//        return DataController.shared.workerContext
-//    }
-//}
-//
-//extension NSManagedObjectContext {
-//    static func newWorkerContext() -> NSManagedObjectContext {
-//        return DataController.shared.newWorkerContext()
-//    }
-//}

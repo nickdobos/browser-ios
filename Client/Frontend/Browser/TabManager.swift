@@ -180,7 +180,7 @@ class TabManager : NSObject {
     }
     
     func saveTabOrder() {
-        let context = DataController.shared.newWorkerContext()
+        let context = DataController.shared.workerContext
         context.perform {
             for i in 0..<self.tabs.internalTabList.count {
                 let tab = self.tabs.internalTabList[i]
