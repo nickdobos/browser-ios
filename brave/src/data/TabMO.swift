@@ -129,12 +129,11 @@ class TabMO: NSManagedObject {
     }
     
     class func preserve(tab: Browser) {
-        if let data = savedTabData(tab: tab) {
-            let context = DataController.shared.workerContext
-            context.perform {
-                _ = TabMO.add(data, context: context)
-                DataController.saveContext(context: context)
-            }
+        guard let data = savedTabData(tab: tab) else { return }
+        let context = DataController.shared.newWorkerContext()
+        context.perform {
+            TabMO.add(data, context: context)
+            DataController.saveContext(context: context)
         }
     }
     

@@ -30,128 +30,84 @@ import Shared
 class DataController: NSObject {
     static let shared = DataController()
     
-    fileprivate lazy var writeContext: NSManagedObjectContext = {
-        let write = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        write.persistentStoreCoordinator = self.persistentStoreCoordinator
-        write.undoManager = nil
-        write.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-        
-        return write
-    }()
-    
-    lazy var workerContext: NSManagedObjectContext = {
-    
-        let worker = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        worker.undoManager = nil
-        worker.mergePolicy = NSOverwriteMergePolicy
-        worker.parent = self.writeContext
-        worker.automaticallyMergesChangesFromParent = true
-        
-        return worker
-    }()
-    
-    lazy var mainThreadContext: NSManagedObjectContext = {
-        let main = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        main.undoManager = nil
-        main.mergePolicy = NSOverwriteMergePolicy
-        main.parent = self.writeContext
-        main.automaticallyMergesChangesFromParent = true
-        
-        return main
-    }()
-    
-    fileprivate var managedObjectModel: NSManagedObjectModel!
-    fileprivate var persistentStoreCoordinator: NSPersistentStoreCoordinator!
-    
-    fileprivate override init() {
-        super.init()
-
-       // TransformerUUID.setValueTransformer(transformer: NSValueTransformer?, forName name: String)
-
-        guard let modelURL = Bundle.main.url(forResource: "Model", withExtension:"momd") else {
-            fatalError("Error loading model from bundle")
-        }
-        guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
-            fatalError("Error initializing mom from: \(modelURL)")
-        }
-        
-        self.managedObjectModel = mom
-        self.persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        if let docURL = urls.last {
-            do {
-                
-                let options: [String: AnyObject] = [
-                    NSMigratePersistentStoresAutomaticallyOption: true as AnyObject,
-                    NSInferMappingModelAutomaticallyOption: true as AnyObject,
-                    NSPersistentStoreFileProtectionKey : FileProtectionType.complete as AnyObject
-                ]
-                
-                // Old store URL from old beta, can be removed at some point (thorough migration testing though)
-                var storeURL = docURL.appendingPathComponent("Brave.sqlite")
-                try self.persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
-                
-                storeURL = docURL.appendingPathComponent("Model.sqlite")
-                try self.persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Model")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            catch {
-                fatalError("Error migrating store: \(error)")
-            }
-        }
-
-        // Setup contexts
-        _ = mainThreadContext
+        })
+        return container
+    }()
+    
+    var mainThreadContext: NSManagedObjectContext {
+        return persistentContainer.viewContext
     }
     
-    static func remove(object: NSManagedObject, context: NSManagedObjectContext = DataController.shared.mainThreadContext) {
+    func newWorkerContext() -> NSManagedObjectContext {
+        return persistentContainer.newBackgroundContext()
+    }
+    
+//    var workerContext: NSManagedObjectContext {
+//        return persistentContainer.newBackgroundContext()
+//    }
+    
+
+    
+    static func remove(object: NSManagedObject, context: NSManagedObjectContext = DataController.shared.persistentContainer.viewContext) {
         context.delete(object)
         DataController.saveContext(context: context)
     }
 
     static func saveContext(context: NSManagedObjectContext?) {
-        guard let context = context else {
-            print("No context on save")
-            return
-        }
-        
-        if context === DataController.shared.writeContext {
-            print("Do not use with the write moc, this save is handled internally here.")
-            return
-        }
-
-        // TODO: Clean this up
-        context.perform {
-            if !context.hasChanges {
-                return
-            }
-            
-            do {
-                try context.save()
-                
-                DataController.shared.writeContext.perform {
-                    if !DataController.shared.writeContext.hasChanges {
-                        return
-                    }
-                    do {
-                        try DataController.shared.writeContext.save()
-                    } catch {
-                        fatalError("Error saving DB to disk: \(error)")
-                    }
-                }
-            } catch {
-                fatalError("Error saving DB: \(error)")
-            }
-        }
+//        guard let context = context else {
+//            print("No context on save")
+//            return
+//        }
+//
+//        if context === DataController.shared.writeContext {
+//            print("Do not use with the write moc, this save is handled internally here.")
+//            return
+//        }
+//
+//        // TODO: Clean this up
+//        context.perform {
+//            if !context.hasChanges {
+//                return
+//            }
+//
+//            do {
+//                try context.save()
+//
+//                DataController.shared.writeContext.perform {
+//                    if !DataController.shared.writeContext.hasChanges {
+//                        return
+//                    }
+//                    do {
+//                        try DataController.shared.writeContext.save()
+//                    } catch {
+//                        fatalError("Error saving DB to disk: \(error)")
+//                    }
+//                }
+//            } catch {
+//                fatalError("Error saving DB: \(error)")
+//            }
+//        }
     }
 }
 
-extension NSManagedObjectContext {
-    static var mainThreadContext: NSManagedObjectContext {
-        return DataController.shared.mainThreadContext
-    }
-    
-    static var workerThreadContext: NSManagedObjectContext {
-        return DataController.shared.workerContext
-    }
-}
+//extension NSManagedObjectContext {
+//    static var mainThreadContext: NSManagedObjectContext {
+//        return DataController.shared.mainThreadContext
+//    }
+//    
+//    static var workerThreadContext: NSManagedObjectContext {
+//        return DataController.shared.workerContext
+//    }
+//}
+//
+//extension NSManagedObjectContext {
+//    static func newWorkerContext() -> NSManagedObjectContext {
+//        return DataController.shared.newWorkerContext()
+//    }
+//}

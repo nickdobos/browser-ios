@@ -864,7 +864,7 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
             tabCell.favicon.isHidden = true
         } else {
             // Fetching favicon
-            if let tabMO = TabMO.get(byId: tab.tabID, context: .workerThreadContext), let urlString = tabMO.url, let url = URL(string: urlString) {
+            if let tabMO = TabMO.get(byId: tab.tabID, context: DataController.shared.newWorkerContext()), let urlString = tabMO.url, let url = URL(string: urlString) {
                 weak var weakSelf = self
                 if ImageCache.shared.hasImage(url, type: .square) {
                     // no relationship - check cache for icon which may have been stored recently for url.

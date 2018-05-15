@@ -320,7 +320,7 @@ class Sync: JSInjector {
                 // Sync local bookmarks, then proceed with fetching
                 // Pull all local bookmarks
                 // Insane .map required for mapping obj-c class to Swift, in order to use protocol instead of class for array param
-                self.sendSyncRecords(action: .create, records: Bookmark.getAllBookmarks(context: DataController.shared.workerContext).map{$0}) { error in
+                self.sendSyncRecords(action: .create, records: Bookmark.getAllBookmarks(context: DataController.shared.newWorkerContext()).map{$0}) { error in
                     startFetching()
                 }
             } else {
@@ -425,7 +425,7 @@ extension Sync {
             fetchedRecords = data.sorted { $0.0.syncTimestamp ?? -1 > $0.1.syncTimestamp ?? -1 }.unique { $0.objectId ?? [] == $1.objectId ?? [] }
         }
         
-        let context = DataController.shared.workerContext
+        let context = DataController.shared.newWorkerContext()
         for fetchedRoot in fetchedRecords {
             
             guard
@@ -507,7 +507,7 @@ extension Sync {
         guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
 
         let ids = fetchedRecords.map { $0.objectId }.flatMap { $0 }
-        let localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: DataController.shared.workerContext) as? [Bookmark]
+        let localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: DataController.shared.newWorkerContext()) as? [Bookmark]
         
         
         var matchedBookmarks = [[Any]]()

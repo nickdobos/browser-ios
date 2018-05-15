@@ -180,7 +180,7 @@ class TabManager : NSObject {
     }
     
     func saveTabOrder() {
-        let context = DataController.shared.workerContext
+        let context = DataController.shared.newWorkerContext()
         context.perform {
             for i in 0..<self.tabs.internalTabList.count {
                 let tab = self.tabs.internalTabList[i]
@@ -392,7 +392,7 @@ class TabManager : NSObject {
     
     func restoreTab(_ tab: Browser) {
         // Tab was created with no active webview or session data. Restore tab data from CD and configure.
-        guard let savedTab = TabMO.get(byId: tab.tabID, context: .mainThreadContext) else { return }
+        guard let savedTab = TabMO.get(byId: tab.tabID, context: DataController.shared.mainThreadContext) else { return }
         
         if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
             let data = SavedTab(id: tabUUID, title: savedTab.title ?? "", url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)

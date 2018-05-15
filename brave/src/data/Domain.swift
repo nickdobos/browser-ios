@@ -122,7 +122,7 @@ class Domain: NSManagedObject {
     class func loadShieldsIntoMemory(_ completionOnMain: @escaping ()->()) {
         BraveShieldState.perNormalizedDomain.removeAll()
 
-        let context = DataController.shared.workerContext
+        let context = DataController.shared.mainThreadContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = Domain.entity(context)
@@ -164,8 +164,9 @@ class Domain: NSManagedObject {
         }
     }
 
+    // TODO: I think we can maybe delete this
     class func deleteNonBookmarkedAndClearSiteVisits(_ completionOnMain: @escaping ()->()) {
-        let context = DataController.shared.workerContext
+        let context = DataController.shared.newWorkerContext()
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
             fetchRequest.entity = Domain.entity(context)
@@ -180,6 +181,7 @@ class Domain: NSManagedObject {
                         context.delete($0)
                     }
                 }
+                // Doesn't this render all above `forEach` moot?
                 for obj in results {
                     // Cascading delete on favicon, it will also get deleted
                     context.delete(obj as! NSManagedObject)

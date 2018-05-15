@@ -219,7 +219,8 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         bookmark.parentFolderObjectId = parentFolder?.syncUUID
         bookmark.site = site
         
-        let context = isFavorite ? DataController.shared.mainThreadContext : DataController.shared.workerContext
+        // TODO: Why?
+        let context = isFavorite ? DataController.shared.mainThreadContext : DataController.shared.newWorkerContext()
         
         // Fetching bookmarks happen on mainThreadContext but we add it on worker context to work around the 
         // duplicated bookmarks bug.
@@ -250,7 +251,7 @@ class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         // bookmark.parentFolderObjectId = [parentFolder]
         bookmark.site = site
         
-        return self.add(rootObject: bookmark, save: true, context: DataController.shared.workerContext)
+        return self.add(rootObject: bookmark, save: true, context: DataController.shared.newWorkerContext())
     }
 
     class func contains(url: URL, getFavorites: Bool = false, context: NSManagedObjectContext) -> Bool {
@@ -407,7 +408,7 @@ extension Bookmark {
     
     /** Removes all bookmarks. Used to reset state for bookmark UITests */
     class func removeAll() {
-        let context = DataController.shared.workerContext
+        let context = DataController.shared.newWorkerContext()
         
         self.getAllBookmarks(context: context).forEach {
             $0.remove(save: false)

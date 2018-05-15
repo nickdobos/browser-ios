@@ -45,7 +45,7 @@ extension BrowserViewController: WebPageStateDelegate {
         
         if !urlChanged.contains("localhost") {
             if let data = TabMO.savedTabData(tab: tab, urlOverride: urlChanged) {
-                let context = DataController.shared.workerContext
+                let context = DataController.shared.newWorkerContext()
                 context.perform {
                     TabMO.add(data, context: context)
                     DataController.saveContext(context: context)

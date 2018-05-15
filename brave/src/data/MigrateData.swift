@@ -78,18 +78,19 @@ class MigrateData: NSObject {
         let query: String = "SELECT id, domain, showOnTopSites FROM domains"
         var results: OpaquePointer? = nil
         
+        let context = DataController.shared.newWorkerContext()
         if sqlite3_prepare_v2(db, query, -1, &results, nil) == SQLITE_OK {
             while sqlite3_step(results) == SQLITE_ROW {
                 let id = sqlite3_column_int(results, 0)
                 let domain = String(cString: sqlite3_column_text(results, 1))
                 let showOnTopSites = sqlite3_column_int(results, 2)
                 
-                if let d = Domain.getOrCreateForUrl(URL(string: domain)!, context: DataController.shared.workerContext) {
+                if let d = Domain.getOrCreateForUrl(URL(string: domain)!, context: context) {
                     d.topsite = (showOnTopSites == 1)
                     domainHash[id] = d
                 }
             }
-            DataController.saveContext(context: DataController.shared.workerContext)
+            DataController.saveContext(context: context)
         }
         
         if sqlite3_finalize(results) != SQLITE_OK {
@@ -205,6 +206,7 @@ class MigrateData: NSObject {
         let query: String = "SELECT guid, type, parentid, title, description, bmkUri, faviconID FROM bookmarksLocal WHERE (id > 4 AND is_deleted = 0) ORDER BY type DESC"
         var results: OpaquePointer? = nil
         
+        let context = DataController.shared.newWorkerContext()
         if sqlite3_prepare_v2(db, query, -1, &results, nil) == SQLITE_OK {
             var relationshipHash: [String: Bookmark] = [:]
             while sqlite3_step(results) == SQLITE_ROW {
@@ -220,7 +222,7 @@ class MigrateData: NSObject {
                     bk.parentFolder = parent
                     bk.syncParentUUID = parent?.syncUUID
                     if let baseUrl = URL(string: url)?.baseURL {
-                        bk.domain = Domain.getOrCreateForUrl(baseUrl, context: DataController.shared.workerContext)
+                        bk.domain = Domain.getOrCreateForUrl(baseUrl, context: context)
                     }
                     
                     if let order = bookmarkOrderHash[guid] {
@@ -230,6 +232,8 @@ class MigrateData: NSObject {
                     relationshipHash[guid] = bk
                 }
             }
+            
+            DataController.saveContext(context: context)
         }
         
         if sqlite3_finalize(results) != SQLITE_OK {

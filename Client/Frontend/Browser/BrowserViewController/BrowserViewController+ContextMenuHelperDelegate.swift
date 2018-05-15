@@ -221,14 +221,14 @@ extension BrowserViewController: ContextMenuHelperDelegate {
         }
         let openTitle = String(format: Strings.Open_All_Bookmarks, bookmarks.count)
         return UIAlertAction(title: openTitle, style: UIAlertActionStyle.default) { (action: UIAlertAction) -> Void in
-            let context = DataController.shared.workerContext
+            let context = DataController.shared.newWorkerContext()
             context.perform {
                 for bookmark in bookmarks {
                     guard let urlString = bookmark.url else { continue }
                     guard let url = URL(string: urlString) else { continue }
                     guard let tabID = TabMO.freshTab().syncUUID else { continue }
                     let data = SavedTab(id: tabID, title: urlString, url: url.absoluteString, isSelected: false, order: -1, screenshot: nil, history: [url.absoluteString], historyIndex: 0)
-                    TabMO.add(data, context: .mainThreadContext)
+                    TabMO.add(data, context: DataController.shared.mainThreadContext)
                     
                     postAsyncToMain {
                         let request = URLRequest(url: url)
