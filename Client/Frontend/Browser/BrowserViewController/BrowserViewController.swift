@@ -974,7 +974,7 @@ class BrowserViewController: UIViewController {
         // We don't allow to have 2 same favorites.
         if !FavoritesHelper.isAlreadyAdded(url) {
             let addToFavoritesActivity = AddToFavoritesActivity() { [weak tab] in
-                FavoritesHelper.add(url: url, title: tab?.displayTitle, color: tab?.color)
+                FavoritesHelper.add(url: url, title: tab?.displayTitle)
             }
             activities.append(addToFavoritesActivity)
         }
