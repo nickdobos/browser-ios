@@ -412,9 +412,12 @@ extension TopSitesPanel: ThumbnailCellDelegate {
 
             let editPopup = UIAlertController.userTextInputAlert(title: Strings.Edit_Bookmark, message: urlString,
                                                              startingText: title, startingText2: fav.url,
-                                                             placeholder2: urlString) { callbackTitle, callbackUrl in
+                                                             placeholder2: urlString,
+                                                             keyboardType2: .URL) { callbackTitle, callbackUrl in
                 if let cTitle = callbackTitle, !cTitle.isEmpty, let cUrl = callbackUrl, !cUrl.isEmpty {
-                    fav.update(customTitle: cTitle, url: cUrl, save: true)
+                    if URL(string: cUrl) != nil {
+                        fav.update(customTitle: cTitle, url: cUrl, save: true)
+                    }
                 }
                 self.dataSource.isEditing = false
             }
